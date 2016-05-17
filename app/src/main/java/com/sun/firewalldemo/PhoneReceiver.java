@@ -10,10 +10,16 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
+import com.sun.firewalldemo.blacklist.BlackListBean;
+import com.sun.firewalldemo.blacklist.BlackListDBTable;
 import com.sun.firewalldemo.blacklist.BlackListDao;
+import com.sun.firewalldemo.phonelog.PhoneLogDao;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by S on 2016/5/16.
@@ -24,6 +30,7 @@ public class PhoneReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         final BlackListDao dao = new BlackListDao(context);
+        final PhoneLogDao phoneLogDao = new PhoneLogDao(context);
 
         if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)){
             //去电电话
@@ -58,14 +65,32 @@ public class PhoneReceiver extends BroadcastReceiver {
                     case TelephonyManager.CALL_STATE_RINGING:
                         System.out.println("TelephonyManager.CALL_STATE_RINGING"+incomingNumber);
 
-                        /*int mode = dao.getMode(incomingNumber);
+                        int mode = dao.getMode(incomingNumber);
                         if ((mode== BlackListDBTable.ALL)||(mode==BlackListDBTable.TEL)){
                             stopCall();
-                        }*/
+                            List<BlackListBean> blackListBeen = dao.getAllDatas();
+                            BlackListBean bean = new BlackListBean();
 
-                        if (incomingNumber.equals("17098159625")){
-                            stopCall();
+                            for (int i = 0;i<blackListBeen.size();i++){
+                                if (bean.equals(blackListBeen.get(i))){
+                                    String name = bean.getName();
+                                    Date date = new Date();
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm");
+                                    String time = dateFormat.format(date);
+                                    System.out.println("name "+name+" phone "+incomingNumber+" time "+time);
+                                    phoneLogDao.add(name,incomingNumber,time);
+                                    return;
+                                }
+                            }
+
+
                         }
+                        break;
+
+                       /* if (incomingNumber.equals("17098159625")){
+                            stopCall();
+
+                        }*/
                 }
             }
 

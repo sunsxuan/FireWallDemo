@@ -17,13 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="未命名"
-            android:textSize="15sp"/>
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/tv_item_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="123456789"
-            android:textSize="13sp"/>
+            android:textSize="15sp"/>
     </LinearLayout>
 
     <ImageView

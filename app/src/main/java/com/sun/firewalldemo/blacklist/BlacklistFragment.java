@@ -60,8 +60,7 @@ public class BlacklistFragment extends Fragment  implements View.OnClickListener
         mBlackListBeen = mBlackListDao.getAllDatas();
 
         if (mAdapter == null){
-            mBlackListBeen = new ArrayList<>();
-
+//            mBlackListBeen = new ArrayList<>();
 
             mAdapter = new BlackListAdapter(getContext(),mBlackListBeen);
 
@@ -70,8 +69,8 @@ public class BlacklistFragment extends Fragment  implements View.OnClickListener
         }else {
             mAdapter.setDao(mBlackListDao);
 
-            mBlackListBeen = new ArrayList<>();
-            mBlackListBeen = mBlackListDao.getAllDatas();
+//            mBlackListBeen = new ArrayList<>();
+//            mBlackListBeen = mBlackListDao.getAllDatas();
             mAdapter.setBean(mBlackListBeen);
 
             System.out.println("mAdapter.notifyDataSetChanged();" +mBlackListBeen);

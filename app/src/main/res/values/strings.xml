@@ -9,8 +9,11 @@
 
     <string name="addFromManual">手动输入拦截号码</string>
     <string name="addFromPhone">从通话录添加</string>
-    <string name="addFromMsg">从通讯录添加</string>
-    <string name="addFromCallLog">从短信列表添加</string>
+    <string name="addFromMsg">从短信列表添加</string>
+    <string name="addFromCallLog">从通话记录添加</string>
     <string name="editPhone">编辑号码</string>
 
+    <string name="msg_content">短信内容:尊敬的用户，截止到05月17日17时本机本月发生话费总额32.00元，查询结果仅供参考，实际费用以出账账单为准。回复 3535 可查询</string>
+    <string name="no_msg">没有拦截信息</string>
+    <string name="no_phone_log">没有拦截来电</string>
 </resources>

@@ -32,7 +32,8 @@ public class AboutActivity extends AppCompatActivity  implements CompoundButton.
     private void initView() {
         tb_1= (ToggleButton) findViewById(R.id.tb1);
         tb_1.setChecked(true);
-
+        Intent intent = new Intent(this,BlackListService.class);
+        startService(intent);
         /*if (bean.getService_mode()==1){
             System.out.println("bean.getService_mode()==1"+bean.getService_mode());
             tb_1.setChecked(true);

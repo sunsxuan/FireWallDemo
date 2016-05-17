@@ -68,7 +68,7 @@ public class BlackListItemActivity extends AppCompatActivity {
         edt_name = (EditText) findViewById(R.id.edt_name);
         now_name = beanList.get(position).getName();
         edt_name.setText(now_name);
-        
+
         btn_addManual = (Button) findViewById(R.id.btn_addManual);
 
 

@@ -8,6 +8,7 @@ public class BlackListBean {
     private String phone;
     private int mode;
 
+
     public String getPhone() {
         return phone;
     }

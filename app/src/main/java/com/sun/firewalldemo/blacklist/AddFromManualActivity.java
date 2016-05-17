@@ -1,6 +1,5 @@
 package com.sun.firewalldemo.blacklist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.sun.firewalldemo.MainActivity;
 import com.sun.firewalldemo.R;
 
 import java.util.List;
@@ -92,8 +90,7 @@ public class AddFromManualActivity extends AppCompatActivity {
 
                     System.out.println("beanList = dao.getAllDatas();" +beanList);
 
-                    Intent intent = new Intent(AddFromManualActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
             }
         });

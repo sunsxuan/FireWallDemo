@@ -15,7 +15,12 @@ public class BlackListDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table blacklist(_id integer primary key autoincrement,name text,phone text,mode integer)");
+        db.execSQL("create table blacklist(_id integer primary key autoincrement,name text,phone text," +
+                "mode integer)");
+        db.execSQL("create table message(_id integer primary key autoincrement,name text ,phone text," +
+                "mode integer,content text,time text)");
+        db.execSQL("create table phonelog(_id integer primary key autoincrement,name text ,phone text," +
+                "time text)");
     }
 
     @Override
