@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">手机防火墙</string>
+    <string name="action_settings">设置</string>
+    <string name="blacklist">黑名单</string>
+    <string name="phone">通话拦截记录</string>
+    <string name="message">短信拦截记录</string>
+    <string name="addBlackList">添加黑名单</string>
+    <string name="addBlacklistPhone">添加黑名单号码</string>
+
+    <string name="addFromManual">手动输入拦截号码</string>
+    <string name="addFromPhone">从通话录添加</string>
+    <string name="addFromMsg">从通讯录添加</string>
+    <string name="addFromCallLog">从短信列表添加</string>
+    <string name="editPhone">编辑号码</string>
+
+</resources>

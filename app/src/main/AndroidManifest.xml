@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.sun.firewalldemo">
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.sun.firewalldemo.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.sun.firewalldemo.AboutActivity"
+                  android:label="@string/action_settings"
+            android:parentActivityName="com.sun.firewalldemo.MainActivity">
+
+        </activity>
+        <activity android:name="com.sun.firewalldemo.blacklist.AddFromManualActivity"
+            android:label="@string/addFromManual"
+            android:parentActivityName="com.sun.firewalldemo.MainActivity">
+
+        </activity>
+        <activity android:name="com.sun.firewalldemo.blacklist.AddFromPhoneActivity"
+                  android:label="@string/addFromPhone"
+                  android:parentActivityName="com.sun.firewalldemo.MainActivity">
+
+        </activity>
+        <activity android:name="com.sun.firewalldemo.blacklist.AddFromMsgActivity"
+                  android:label="@string/addFromMsg"
+                  android:parentActivityName="com.sun.firewalldemo.MainActivity">
+
+        </activity>
+        <activity android:name="com.sun.firewalldemo.blacklist.AddFromPhoneLogActivity"
+                  android:label="@string/addFromCallLog"
+                  android:parentActivityName="com.sun.firewalldemo.MainActivity">
+
+        </activity>
+        <activity android:name="com.sun.firewalldemo.blacklist.BlackListItemActivity"
+            android:label="@string/editPhone"
+            android:parentActivityName="com.sun.firewalldemo.MainActivity">
+
+        </activity>
+
+        <service android:name=".BlackListService">
+
+        </service>
+        <receiver android:name=".SmsReceiver">
+
+        </receiver>
+        <!--<receiver android:name=".PhoneReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
+                <action android:name="android.intent.action.PHONE_STATE"/>
+            </intent-filter>
+        </receiver>-->
+    </application>
+
+</manifest>
