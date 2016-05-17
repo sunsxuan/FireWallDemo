@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * Created by S on 2016/5/16.
  */
-public class SmsReceiver extends BroadcastReceiver {
+public class MessageReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -52,6 +52,7 @@ public class AddFromManualActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String phone = edt_phone.getText().toString();
+                String name = edt_name.getText().toString();
                 Boolean bMsg = cb_msg.isChecked();
                 Boolean bPhone = cb_phone.isChecked();
 
@@ -78,6 +79,11 @@ public class AddFromManualActivity extends AppCompatActivity {
                     }
 
                     BlackListBean bean = new BlackListBean();
+                    String defaultName = "未知";
+                    if (name.length()==0){
+                        name = defaultName;
+                    }
+                    bean.setName(name);
                     bean.setPhone(phone);
                     bean.setMode(mode);
                     dao.add(bean);

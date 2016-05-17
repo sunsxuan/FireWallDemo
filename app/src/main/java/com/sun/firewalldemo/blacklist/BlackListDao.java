@@ -25,6 +25,7 @@ public class BlackListDao {
         Cursor cursor = db.rawQuery("select * from " + BlackListDBTable.BLACKLISTTABLE +" ",null);
         while (cursor.moveToNext()){
             BlackListBean bean = new BlackListBean();
+            bean.setName(cursor.getString(cursor.getColumnIndex(BlackListDBTable.NAME)));
             bean.setPhone(cursor.getString(cursor.getColumnIndex(BlackListDBTable.PHONE)));
             bean.setMode(cursor.getInt(cursor.getColumnIndex(BlackListDBTable.MODE)));
             datas.add(bean);
@@ -41,29 +42,32 @@ public class BlackListDao {
      */
 
     public void add(BlackListBean bean){
-        add(bean.getPhone(),bean.getMode());
+        add(bean.getName(),bean.getPhone(),bean.getMode());
     }
 
    //添加黑名单和拦截方式
-    public void add(String phone , int mode){
+    public void add(String name,String phone , int mode){
         SQLiteDatabase db = mBlackListDB.getWritableDatabase();
         ContentValues values = new ContentValues();
-
+        values.put(BlackListDBTable.NAME,name);
         values.put(BlackListDBTable.MODE,mode);
         values.put(BlackListDBTable.PHONE,phone);
         db.insert(BlackListDBTable.BLACKLISTTABLE,null,values);
         db.close();
     }
 
+
+
     /**
      * 更新新的拦截方式
      * @param phone
      * @param mode
      */
-    public void update(String phone, int mode){
+    public void update(String name ,String phone, int mode){
         SQLiteDatabase db = mBlackListDB.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(BlackListDBTable.MODE,mode);
+        values.put(BlackListDBTable.NAME,name);
         db.update(BlackListDBTable.BLACKLISTTABLE,values, BlackListDBTable.PHONE+ "=?",new String[]{phone});
         db.close();
     }

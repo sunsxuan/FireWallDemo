@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
  * Created by S on 2016/5/16.
  */
 public class BlackListService extends Service {
-    private SmsReceiver mSmsReceiver;
+    private MessageReceiver mMessageReceiver;
     private PhoneReceiver mPhoneReceiver;
     private PhoneStateListener listener;
     private TelephonyManager tm;
@@ -35,12 +35,12 @@ public class BlackListService extends Service {
         System.out.println("Service onCreate()");
 
         //注册短信接听  短信广播
-        mSmsReceiver = new SmsReceiver();
+        mMessageReceiver = new MessageReceiver();
         mPhoneReceiver = new PhoneReceiver();
 
         IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
         intentFilter.setPriority(Integer.MAX_VALUE);
-        registerReceiver(mSmsReceiver, intentFilter);
+        registerReceiver(mMessageReceiver, intentFilter);
 
         //注册电话接听
 
@@ -130,7 +130,7 @@ public class BlackListService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("Service onDestroy() ");
-        unregisterReceiver(mSmsReceiver);
+        unregisterReceiver(mMessageReceiver);
 
         tm.listen(listener,PhoneStateListener.LISTEN_NONE);
     }

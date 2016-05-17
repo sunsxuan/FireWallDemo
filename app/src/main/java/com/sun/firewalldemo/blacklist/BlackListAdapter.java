@@ -61,17 +61,25 @@ public class BlackListAdapter extends BaseAdapter {
         if (convertView == null){
             holder = new ViewHolder();
             convertView=mInflater.inflate(R.layout.blacklist_item,parent,false);
+
             holder.imageView = (ImageView) convertView.findViewById(R.id.iv_item);
-            holder.textView = (TextView) convertView.findViewById(R.id.tv_item_phone);
+            holder.tv_phone = (TextView) convertView.findViewById(R.id.tv_item_phone);
+            holder.tv_name = (TextView) convertView.findViewById(R.id.tv_item_name);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
         final BlackListBean bean = mBlackListBeen.get(position);
 
-        holder.textView.setText(bean.getPhone());
+
+        if (bean.getName()==null){
+            holder.tv_name.setText("未命名");
+        }else {
+            holder.tv_name.setText(bean.getName());
+        }
+        holder.tv_phone.setText(bean.getPhone());
         //为删除图片添加点击事件
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+        holder.tv_phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = BlackListItemActivity.newIntent(mContext,position);
@@ -108,7 +116,8 @@ public class BlackListAdapter extends BaseAdapter {
     }
 
     public class ViewHolder{
-        TextView  textView;
+        TextView  tv_name;
+        TextView  tv_phone;
         ImageView imageView;
 
     }

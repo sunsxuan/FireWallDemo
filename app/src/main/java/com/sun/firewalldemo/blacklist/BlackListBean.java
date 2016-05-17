@@ -35,7 +35,8 @@ public class BlackListBean {
     @Override
     public String toString() {
         return "BlackListBean{" +
-                "phone='" + phone + '\'' +
+                "name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
                 ", mode=" + mode +
                 '}';
     }

@@ -29,6 +29,7 @@ public class BlackListItemActivity extends AppCompatActivity {
     private List<BlackListBean> beanList;
 
     private String now_phone;
+    private String now_name;
     private int now_mode;
 
     private static final String EXTRA = BlackListItemActivity.class.getSimpleName();
@@ -65,7 +66,9 @@ public class BlackListItemActivity extends AppCompatActivity {
         tv_phone.setText(now_phone);
 
         edt_name = (EditText) findViewById(R.id.edt_name);
-
+        now_name = beanList.get(position).getName();
+        edt_name.setText(now_name);
+        
         btn_addManual = (Button) findViewById(R.id.btn_addManual);
 
 
@@ -92,8 +95,8 @@ public class BlackListItemActivity extends AppCompatActivity {
         btn_addManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*String phone = edt_phone.getText().toString();
-                System.out.println("String phone = edt_phone.getText().toString();" +phone);*/
+                String name = edt_name.getText().toString();
+                System.out.println("String phone = edt_phone.getText().toString();" +name);
                 Boolean bMsg = cb_msg.isChecked();
                 Boolean bPhone = cb_phone.isChecked();
 
@@ -115,7 +118,7 @@ public class BlackListItemActivity extends AppCompatActivity {
                         Toast.makeText(BlackListItemActivity.this, "拦截方式为全部拦截", Toast.LENGTH_SHORT).show();
                     }
 
-                    dao.update(now_phone, mode);
+                    dao.update(name,now_phone, mode);
                     Intent intent = new Intent(BlackListItemActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

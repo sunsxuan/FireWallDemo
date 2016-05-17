@@ -47,6 +47,7 @@ public class BlacklistFragment extends Fragment  implements View.OnClickListener
         return view;
     }
 
+    //重新更新UI
     @Override
     public void onResume() {
         super.onResume();
