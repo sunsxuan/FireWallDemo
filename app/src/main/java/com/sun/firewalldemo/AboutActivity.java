@@ -3,7 +3,6 @@ package com.sun.firewalldemo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import com.sun.firewalldemo.blacklist.BlackListBean;
 /**
  * Created by S on 2016/5/3.
  */
-public class AboutActivity extends AppCompatActivity  implements CompoundButton.OnCheckedChangeListener{
+public class AboutActivity extends BaseActivity  implements CompoundButton.OnCheckedChangeListener{
     private ToggleButton tb_1,tb_2,tb_3;
     private TextView tv_32;
     private BlackListBean bean ;
@@ -32,15 +31,7 @@ public class AboutActivity extends AppCompatActivity  implements CompoundButton.
     private void initView() {
         tb_1= (ToggleButton) findViewById(R.id.tb1);
         tb_1.setChecked(true);
-        Intent intent = new Intent(this,BlackListService.class);
-        startService(intent);
-        /*if (bean.getService_mode()==1){
-            System.out.println("bean.getService_mode()==1"+bean.getService_mode());
-            tb_1.setChecked(true);
-        }else {
-            System.out.println("bean.getService_mode()==0"+bean.getService_mode());
-            tb_1.setChecked(false);
-        }*/
+
 
         tb_2= (ToggleButton) findViewById(R.id.tb2);
         tb_3= (ToggleButton) findViewById(R.id.tb3);

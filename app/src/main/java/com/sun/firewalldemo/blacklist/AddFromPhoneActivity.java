@@ -4,11 +4,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.sun.firewalldemo.BaseActivity;
 import com.sun.firewalldemo.R;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by S on 2016/5/15.
  */
-public class AddFromPhoneActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class AddFromPhoneActivity extends BaseActivity implements AdapterView.OnItemClickListener{
     private ListView lv_phone_list;
     private PhoneBean mPhoneBean;
     private List<PhoneBean> phoneList;

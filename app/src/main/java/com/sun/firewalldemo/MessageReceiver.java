@@ -33,9 +33,6 @@ public class MessageReceiver extends BroadcastReceiver {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
             String time = simpleDateFormat.format(timeDate);
             String name = "未知";
-            System.out.println("短信来自:" + number);
-            System.out.println("短信内容:" + content);
-            System.out.println("短信时间:" + time);
 
             mBlackListDao = new BlackListDao(context);
             int mode = mBlackListDao.getMode(number);

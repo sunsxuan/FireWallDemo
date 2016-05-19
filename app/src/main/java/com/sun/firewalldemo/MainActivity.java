@@ -1,18 +1,21 @@
 package com.sun.firewalldemo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+import com.sun.firewalldemo.utils.ActivityContainer;
+import com.sun.firewalldemo.utils.LogUtils;
 
+public class MainActivity extends BaseActivity {
+    private long currentBackTime = 0; //当前按下返回键的系统时间
+    private long lastBackTime = 0; //上次按下返回键的系统时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,33 +24,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /**
+         * 启动开启服务
+         */
+        Intent intent = new Intent(this,BlackListService.class);
+        startService(intent);
         //加载Fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_content,new MainFragment())
                 .commit();
-/*        mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mTabLayout = (TabLayout)findViewById(R.id.tab_layout);
 
-
-        initViewPager(mViewPager);
-
-        mTabLayout.addTab(mTabLayout.newTab().setText("黑名单"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("电话拦截"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("短信拦截"));
-        mTabLayout.setupWithViewPager(mViewPager);*/
 
     }
 
-
-/*
-    private void initViewPager(ViewPager viewPager) {
-        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager(),this);
-        adapter.addFragment(new PhoneFragment());
-        adapter.addFragment(new MessageFragment());
-        adapter.addFragment(new BlacklistFragment());
-        viewPager.setAdapter(adapter);
-    }
-*/
 
 
     @Override
@@ -65,12 +54,51 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,AboutActivity.class);
-            startActivity(intent);
+        switch (id){
+            case R.id.action_settings:
+                Intent intent = new Intent(this,AboutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_quit:
+                AlertDialog.Builder  builder  = new AlertDialog.Builder(this);
+                builder.setTitle("退出应用");
+                builder.setMessage("退出后将无法进行拦截");
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //销毁所有Activity
+                        ActivityContainer.getInstance().finishAll();
+                    }
+                });
+                builder.show();
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            currentBackTime = System.currentTimeMillis();
+            LogUtils.d("TAG","currentBackTime "+currentBackTime );
+            //比较两次时间间隔
+            if (currentBackTime-lastBackTime > 2*1000){
+                Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
+                lastBackTime = currentBackTime;
+            }else {
+                finish();
+            }
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onKeyDown(keyCode, event);
     }
 }

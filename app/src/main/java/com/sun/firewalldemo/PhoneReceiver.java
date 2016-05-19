@@ -32,10 +32,10 @@ public class PhoneReceiver extends BroadcastReceiver {
         final BlackListDao dao = new BlackListDao(context);
         final PhoneLogDao phoneLogDao = new PhoneLogDao(context);
 
-        if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)){
+        if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
             //去电电话
             System.out.println("去电电话");
-        }else {
+        } else {
             //来电电话
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
             //设置监听器
@@ -49,11 +49,11 @@ public class PhoneReceiver extends BroadcastReceiver {
             }*/
         }
 
-        listener = new PhoneStateListener(){
+        listener = new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
                 super.onCallStateChanged(state, incomingNumber);
-                switch (state){
+                switch (state) {
                     //手机空闲
                     case TelephonyManager.CALL_STATE_IDLE:
                         System.out.println("TelephonyManager.CALL_STATE_IDLE:");
@@ -63,53 +63,47 @@ public class PhoneReceiver extends BroadcastReceiver {
                         System.out.println("TelephonyManager.CALL_STATE_OFFHOOK");
                         break;
                     case TelephonyManager.CALL_STATE_RINGING:
-                        System.out.println("TelephonyManager.CALL_STATE_RINGING"+incomingNumber);
+                        System.out.println("TelephonyManager.CALL_STATE_RINGING " + incomingNumber);
+                        if (incomingNumber.equals("13117875310")) {
+                            System.out.println("incomingNumber.equals(\"13117875310\") " + incomingNumber);
+                            stopCall();
+                            return;
+                        }
 
                         int mode = dao.getMode(incomingNumber);
-                        if ((mode== BlackListDBTable.ALL)||(mode==BlackListDBTable.TEL)){
+                        if ((mode == BlackListDBTable.ALL) || (mode == BlackListDBTable.TEL)) {
                             stopCall();
                             List<BlackListBean> blackListBeen = dao.getAllDatas();
                             BlackListBean bean = new BlackListBean();
 
-                            for (int i = 0;i<blackListBeen.size();i++){
-                                if (bean.equals(blackListBeen.get(i))){
+                            for (int i = 0; i < blackListBeen.size(); i++) {
+                                if (bean.equals(blackListBeen.get(i))) {
                                     String name = bean.getName();
                                     Date date = new Date();
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm");
                                     String time = dateFormat.format(date);
-                                    System.out.println("name "+name+" phone "+incomingNumber+" time "+time);
-                                    phoneLogDao.add(name,incomingNumber,time);
+                                    System.out.println("name " + name + " phone " + incomingNumber + " time " + time);
+                                    phoneLogDao.add(name, incomingNumber, time);
                                     return;
                                 }
                             }
-
-
                         }
                         break;
 
-                       /* if (incomingNumber.equals("17098159625")){
-                            stopCall();
-
-                        }*/
                 }
             }
 
             private void stopCall() {
-
                 try {
-                    Method method = Class.forName("android.os.ServiceManager").getMethod("getService", String.class);
-                    // 获取远程TELEPHONY_SERVICE的IBinder对象的代理
-
-
-                    IBinder binder = (IBinder) method.invoke(null,Context.TELECOM_SERVICE);
-                    // 将IBinder对象的代理转换为ITelephony对象
+                    Class clazz = Class.forName("android.os.ServiceManager");
+                    Method method = clazz.getDeclaredMethod("getService", String.class);
+                    IBinder binder = (IBinder) method.invoke(null, Context.TELEPHONY_SERVICE);
                     ITelephony telephony = ITelephony.Stub.asInterface(binder);
-                    // 挂断电话
                     telephony.endCall();
-                    telephony.cancelMissedCallsNotification();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
+
                 } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
@@ -118,6 +112,7 @@ public class PhoneReceiver extends BroadcastReceiver {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+
             }
         };
     }

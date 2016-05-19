@@ -11,16 +11,21 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
+import com.sun.firewalldemo.blacklist.BlackListDBTable;
+import com.sun.firewalldemo.blacklist.BlackListDao;
+import com.sun.firewalldemo.phonelog.PhoneLogDao;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by S on 2016/5/16.
  */
 public class BlackListService extends Service {
     private MessageReceiver mMessageReceiver;
-    private PhoneReceiver mPhoneReceiver;
+
     private PhoneStateListener listener;
     private TelephonyManager tm;
 
@@ -36,7 +41,7 @@ public class BlackListService extends Service {
 
         //注册短信接听  短信广播
         mMessageReceiver = new MessageReceiver();
-        mPhoneReceiver = new PhoneReceiver();
+
 
         IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
         intentFilter.setPriority(Integer.MAX_VALUE);
@@ -44,11 +49,11 @@ public class BlackListService extends Service {
 
         //注册电话接听
 
-        listener = new PhoneStateListener(){
+        listener = new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
                 super.onCallStateChanged(state, incomingNumber);
-                switch (state){
+                switch (state) {
                     //手机空闲
                     case TelephonyManager.CALL_STATE_IDLE:
                         System.out.println("TelephonyManager.CALL_STATE_IDLE:");
@@ -57,22 +62,28 @@ public class BlackListService extends Service {
                     case TelephonyManager.CALL_STATE_OFFHOOK:
                         System.out.println("TelephonyManager.CALL_STATE_OFFHOOK");
                         break;
+                    //来电状态
                     case TelephonyManager.CALL_STATE_RINGING:
-                        System.out.println("TelephonyManager.CALL_STATE_RINGING"+incomingNumber);
-
-                        /*int mode = dao.getMode(incomingNumber);
-                        if ((mode== BlackListDBTable.ALL)||(mode==BlackListDBTable.TEL)){
-                            stopCall();
-                        }*/
-
-                        if (incomingNumber.equals("17098159625")){
+                        System.out.println("TelephonyManager.CALL_STATE_RINGING" + incomingNumber);
+                        BlackListDao dao = new BlackListDao(getApplicationContext());
+                        PhoneLogDao phoneLogDao = new PhoneLogDao(getApplicationContext());
+                        int mode = dao.getMode(incomingNumber);
+                        if (mode== BlackListDBTable.ALL ||mode== BlackListDBTable.TEL){
+                            String name = dao.getName(incomingNumber);
+                            Date date = new Date();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm");
+                            String time = dateFormat.format(date);
+                            System.out.println("name " + name + " phone " + incomingNumber + " time " + time);
+                            phoneLogDao.add(name, incomingNumber, time);
+                            System.out.println("拦截成功");
                             stopCall();
                         }
+
+
                         break;
                     default:
                         break;
                 }
-
             }
 
             private void stopCall() {
@@ -81,8 +92,6 @@ public class BlackListService extends Service {
                     Class clazz = Class.forName("android.os.ServiceManager");
                     Method method = clazz.getDeclaredMethod("getService", String.class);
                     // 获取远程TELEPHONY_SERVICE的IBinder对象的代理
-
-
                     IBinder binder = (IBinder) method.invoke(null, Context.TELEPHONY_SERVICE);
                     // 将IBinder对象的代理转换为ITelephony对象
                     telephony = ITelephony.Stub.asInterface(binder);
@@ -119,7 +128,6 @@ public class BlackListService extends Service {
     }
 
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -132,6 +140,6 @@ public class BlackListService extends Service {
         System.out.println("Service onDestroy() ");
         unregisterReceiver(mMessageReceiver);
 
-        tm.listen(listener,PhoneStateListener.LISTEN_NONE);
+        tm.listen(listener, PhoneStateListener.LISTEN_NONE);
     }
 }

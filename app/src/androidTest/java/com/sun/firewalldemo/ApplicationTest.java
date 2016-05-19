@@ -22,7 +22,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public void testAdd(){
         BlackListDao dao = new BlackListDao(getContext());
         for (int i=0;i<20;i++){
-            dao.add("1234567", BlackListDBTable.TEL);
+            dao.add(null,"1234567",BlackListDBTable.ALL);
             Log.d("TAG", "testSum: "+i);
             System.out.println("testSum: "+i);
         }
@@ -38,7 +38,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     public void testUpdate(){
         BlackListDao dao = new BlackListDao(getContext());
-        dao.update("1234567", BlackListDBTable.ALL);
+        dao.update(null,"1234567", BlackListDBTable.ALL);
         List<BlackListBean> datas = dao.getAllDatas();
         System.out.println(datas);
     }

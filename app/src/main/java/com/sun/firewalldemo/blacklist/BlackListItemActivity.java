@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sun.firewalldemo.BaseActivity;
 import com.sun.firewalldemo.MainActivity;
 import com.sun.firewalldemo.R;
 
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by S on 2016/5/16.
  */
-public class BlackListItemActivity extends AppCompatActivity {
+public class BlackListItemActivity extends BaseActivity {
     private EditText  edt_name;
     private TextView tv_phone;
     private Button btn_addManual;

@@ -102,4 +102,25 @@ public class BlackListDao {
         System.out.println("return mode " + mode);
         return mode;
     }
+    /**
+     * 查询电话拦截姓名
+     *
+     * @param phone
+     */
+    public String getName(String phone) {
+        SQLiteDatabase db = mBlackListDB.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + BlackListDBTable.NAME + " from "
+                        + BlackListDBTable.BLACKLISTTABLE + " where " + BlackListDBTable.PHONE + " = ?",
+                new String[]{phone});
+        String name = "未知";
+        if (cursor.moveToNext()) {
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            System.out.println("name = cursor.getString(cursor.getColumnIndex(\"name\"));" + name);
+
+        } else {
+            name = "未知";
+        }
+        System.out.println("return name " + name);
+        return name;
+    }
 }

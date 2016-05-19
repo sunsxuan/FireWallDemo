@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">手机防火墙</string>
-    <string name="action_settings">设置</string>
+    <string name="action_settings">拦截规则设置</string>
+    <string name="action_quit">退出</string>
     <string name="blacklist">黑名单</string>
     <string name="phone">通话拦截记录</string>
     <string name="message">短信拦截记录</string>

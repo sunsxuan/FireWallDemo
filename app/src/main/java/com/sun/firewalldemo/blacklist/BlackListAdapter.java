@@ -78,8 +78,8 @@ public class BlackListAdapter extends BaseAdapter {
             holder.tv_name.setText(bean.getName());
         }
         holder.tv_phone.setText(bean.getPhone());
-        //为删除图片添加点击事件
-        holder.tv_phone.setOnClickListener(new View.OnClickListener() {
+        //为列表添加点击事件
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = BlackListItemActivity.newIntent(mContext,position);
