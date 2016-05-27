@@ -7,7 +7,7 @@ import android.telephony.SmsMessage;
 
 import com.sun.firewalldemo.blacklist.BlackListDBTable;
 import com.sun.firewalldemo.blacklist.BlackListDao;
-import com.sun.firewalldemo.message.MessageDao;
+import com.sun.firewalldemo.messagelog.MessageDao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

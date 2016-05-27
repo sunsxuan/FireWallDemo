@@ -27,10 +27,6 @@ public class ActivityContainer {
         activityStack.add(activity);
     }
 
-    public  void removeActivity(Activity activity){
-        activityStack.remove(activity);
-    }
-
     public  void finishAll(){
         for (Activity activity : activityStack){
             if (null != activity){
@@ -38,5 +34,9 @@ public class ActivityContainer {
             }
         }
         activityStack.clear();
+    }
+
+    public  void removeActivity(Activity activity){
+        activityStack.remove(activity);
     }
 }

@@ -1,4 +1,4 @@
-package com.sun.firewalldemo.message;
+package com.sun.firewalldemo.messagelog;
 
 /**
  * Created by S on 2016/5/17.

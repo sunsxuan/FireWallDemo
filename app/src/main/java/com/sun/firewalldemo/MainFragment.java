@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sun.firewalldemo.blacklist.BlacklistFragment;
-import com.sun.firewalldemo.message.MessageFragment;
+import com.sun.firewalldemo.messagelog.MessageFragment;
 import com.sun.firewalldemo.phonelog.PhoneFragment;
 
 /**

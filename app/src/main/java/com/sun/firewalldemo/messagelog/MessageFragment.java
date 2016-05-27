@@ -1,4 +1,4 @@
-package com.sun.firewalldemo.message;
+package com.sun.firewalldemo.messagelog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.sun.firewalldemo.message;
+package com.sun.firewalldemo.messagelog;
 
 import android.content.Context;
 import android.view.LayoutInflater;

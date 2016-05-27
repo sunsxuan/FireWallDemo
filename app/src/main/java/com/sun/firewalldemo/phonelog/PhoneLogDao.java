@@ -41,7 +41,7 @@ public class PhoneLogDao {
         return datas;
     }
 
-    //添加拦截短信信息
+
     public void add(String name, String phone, String time) {
         SQLiteDatabase db = mBlackListDB.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -49,6 +49,12 @@ public class PhoneLogDao {
         values.put(BlackListDBTable.PHONE, phone);
         values.put(BlackListDBTable.TIME, time);
         db.insert(BlackListDBTable.PHONELOGTABLE, null, values);
+        db.close();
+    }
+
+    public void delete(String phone){
+        SQLiteDatabase db = mBlackListDB.getWritableDatabase();
+        db.delete(BlackListDBTable.PHONELOGTABLE,BlackListDBTable.PHONE +"=?",new String[]{phone});
         db.close();
     }
 }

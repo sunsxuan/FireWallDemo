@@ -3,6 +3,7 @@ package com.sun.firewalldemo;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -27,8 +28,16 @@ public class MainActivity extends BaseActivity {
         /**
          * 启动开启服务
          */
-        Intent intent = new Intent(this,BlackListService.class);
-        startService(intent);
+        SharedPreferences pref = getSharedPreferences("data",MODE_PRIVATE);
+        boolean tb_1_checked = pref.getBoolean("tb1",false);
+        if (tb_1_checked){
+            Intent intent = new Intent(this,BlackListService.class);
+            startService(intent);
+        }
+
+
+
+
         //加载Fragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_content,new MainFragment())
@@ -61,8 +70,8 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.action_quit:
                 AlertDialog.Builder  builder  = new AlertDialog.Builder(this);
-                builder.setTitle("退出应用");
-                builder.setMessage("退出后将无法进行拦截");
+                builder.setTitle("提示");
+                builder.setMessage("确定退出应用吗？");
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

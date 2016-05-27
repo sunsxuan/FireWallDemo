@@ -1,11 +1,14 @@
 package com.sun.firewalldemo.phonelog;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,7 +19,7 @@ import java.util.List;
 /**
  * Created by S on 2016/5/3.
  */
-public class PhoneFragment extends Fragment {
+public class PhoneFragment extends Fragment implements AdapterView.OnItemClickListener{
     private ListView mListView;
     private PhoneLogAdapter mPhoneLogAdapter;
     private List<PhoneLogBean> mBeanList;
@@ -29,6 +32,7 @@ public class PhoneFragment extends Fragment {
         mListView = (ListView) view.findViewById(R.id.lv_phone_log);
         tv_no_log= (TextView) view.findViewById(R.id.tv_no_phone);
 
+        mListView.setOnItemClickListener(this);
 
         updateUI();
 
@@ -58,5 +62,27 @@ public class PhoneFragment extends Fragment {
         }else {
             tv_no_log.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("提示");
+        builder.setMessage("确定删除这条记录吗？");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPhoneLogDao.delete(mBeanList.get(position).getPhone());
+                mPhoneLogAdapter.setPhoneLog(mPhoneLogDao.getPhoneLog());
+                updateUI();
+            }
+        });
+        builder.show();
     }
 }
