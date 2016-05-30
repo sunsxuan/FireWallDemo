@@ -52,6 +52,10 @@ public class PhoneLogDao {
         db.close();
     }
 
+    /**
+     * 删除号码
+     * @param phone
+     */
     public void delete(String phone){
         SQLiteDatabase db = mBlackListDB.getWritableDatabase();
         db.delete(BlackListDBTable.PHONELOGTABLE,BlackListDBTable.PHONE +"=?",new String[]{phone});

@@ -19,6 +19,7 @@ import com.sun.firewalldemo.utils.LogUtils;
 public class MainActivity extends BaseActivity {
     private long currentBackTime = 0; //当前按下返回键的系统时间
     private long lastBackTime = 0; //上次按下返回键的系统时间
+    private SharedPreferences mPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,8 @@ public class MainActivity extends BaseActivity {
         /**
          * 启动开启服务
          */
-        SharedPreferences pref = getSharedPreferences("data",MODE_PRIVATE);
-        boolean tb_1_checked = pref.getBoolean("tb1",false);
+        mPref = getSharedPreferences("data",MODE_PRIVATE);
+        boolean tb_1_checked = mPref.getBoolean("tb1",false);
         if (tb_1_checked){
             Intent intent = new Intent(this,BlackListService.class);
             startService(intent);
@@ -114,17 +115,23 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 注册开机广播
+     * 注册开机广播   开机启动服务
      */
     public class BootCompleteReceiver extends BroadcastReceiver{
         private final String ACTION = "android.intent.action.BOOT_COMPLETED";
         @Override
         public void onReceive(Context context, Intent intent) {
-              if (intent.getAction().equals(ACTION)){
-                  Intent intent1 = new Intent(context,MainActivity.class);
-                  intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                  startActivity(intent1);
-              }
+            mPref = getSharedPreferences("data",MODE_PRIVATE);
+            boolean tb_2_checked = mPref.getBoolean("tb2",false);
+            if (tb_2_checked){
+                if (intent.getAction().equals(ACTION)){
+                    //启动服务
+                    Intent intent1 = new Intent(context, BlackListService.class);
+                    startService(intent1);
+                    Toast.makeText(context, "开机启动监听服务", Toast.LENGTH_SHORT).show();
+                }
+            }
+
         }
     }
 }

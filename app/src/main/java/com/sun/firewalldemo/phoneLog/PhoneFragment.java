@@ -2,6 +2,8 @@ package com.sun.firewalldemo.phonelog;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,20 +21,22 @@ import java.util.List;
 /**
  * Created by S on 2016/5/3.
  */
-public class PhoneFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class PhoneFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private ListView mListView;
     private PhoneLogAdapter mPhoneLogAdapter;
     private List<PhoneLogBean> mBeanList;
     private PhoneLogDao mPhoneLogDao;
     private TextView tv_no_log;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_phone,container,false);
+        View view = inflater.inflate(R.layout.fragment_phone, container, false);
         mListView = (ListView) view.findViewById(R.id.lv_phone_log);
-        tv_no_log= (TextView) view.findViewById(R.id.tv_no_phone);
+        tv_no_log = (TextView) view.findViewById(R.id.tv_no_phone);
 
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
 
         updateUI();
 
@@ -49,23 +53,31 @@ public class PhoneFragment extends Fragment implements AdapterView.OnItemClickLi
         mPhoneLogDao = new PhoneLogDao(getContext());
         mBeanList = mPhoneLogDao.getPhoneLog();
 
-        if (mPhoneLogAdapter==null){
-            mPhoneLogAdapter = new PhoneLogAdapter(mBeanList,getContext());
+        if (mPhoneLogAdapter == null) {
+            mPhoneLogAdapter = new PhoneLogAdapter(mBeanList, getContext());
             mListView.setAdapter(mPhoneLogAdapter);
-        }else {
+        } else {
             mPhoneLogAdapter.setPhoneLog(mBeanList);
             mPhoneLogAdapter.notifyDataSetChanged();
         }
 
-        if (mBeanList.isEmpty()){
+        if (mBeanList.isEmpty()) {
             tv_no_log.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tv_no_log.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mBeanList.get(position).getPhone()));
+        startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("提示");
         builder.setMessage("确定删除这条记录吗？");
@@ -84,5 +96,6 @@ public class PhoneFragment extends Fragment implements AdapterView.OnItemClickLi
             }
         });
         builder.show();
+        return false;
     }
 }

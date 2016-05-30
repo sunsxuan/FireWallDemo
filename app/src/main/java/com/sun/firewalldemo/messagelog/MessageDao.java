@@ -53,4 +53,11 @@ public class MessageDao {
         db.insert(BlackListDBTable.MESSAGETABLE, null, values);
         db.close();
     }
+
+    //删除此信息
+    public void delete(String phone){
+        SQLiteDatabase db = mBlackListDB.getWritableDatabase();
+        db.delete(BlackListDBTable.MESSAGETABLE,BlackListDBTable.PHONE +"=?",new String[]{phone});
+        db.close();
+    }
 }
