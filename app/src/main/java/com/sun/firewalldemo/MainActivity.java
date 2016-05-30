@@ -1,6 +1,8 @@
 package com.sun.firewalldemo;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -110,4 +112,20 @@ public class MainActivity extends BaseActivity {
 
         return super.onKeyDown(keyCode, event);
     }
+
+    /**
+     * 注册开机广播
+     */
+    public class BootCompleteReceiver extends BroadcastReceiver{
+        private final String ACTION = "android.intent.action.BOOT_COMPLETED";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+              if (intent.getAction().equals(ACTION)){
+                  Intent intent1 = new Intent(context,MainActivity.class);
+                  intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  startActivity(intent1);
+              }
+        }
+    }
 }
+
