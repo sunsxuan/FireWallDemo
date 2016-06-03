@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
@@ -76,6 +77,17 @@ public class BlackListService extends Service {
                             System.out.println("name " + name + " phone " + incomingNumber + " time " + time);
                             phoneLogDao.add(name, incomingNumber, time);
                             System.out.println("拦截成功");
+
+                            //开启通知服务
+                            SharedPreferences sharedPreferences = getSharedPreferences("data",Context.MODE_PRIVATE);
+                            boolean tb_2_checked = sharedPreferences.getBoolean("tb2",false);
+                            if (tb_2_checked){
+                                Intent intentService = new Intent(BlackListService.this,NotifyService.class);
+                                intentService.addFlags(1);
+                                intentService.putExtra("number",incomingNumber);
+                                startService(intentService);
+                            }
+
                             stopCall();
                         }
 
@@ -98,6 +110,9 @@ public class BlackListService extends Service {
                     // 挂断电话
                     telephony.endCall();
 
+                    //通知用户
+                    notificationUser();
+
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -109,6 +124,10 @@ public class BlackListService extends Service {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+            }
+
+            private void notificationUser() {
+
             }
         };
         tm = (TelephonyManager) getSystemService(Service.TELEPHONY_SERVICE);

@@ -64,11 +64,11 @@ public class PhoneReceiver extends BroadcastReceiver {
                         break;
                     case TelephonyManager.CALL_STATE_RINGING:
                         System.out.println("TelephonyManager.CALL_STATE_RINGING " + incomingNumber);
-                        if (incomingNumber.equals("13117875310")) {
+                        /*if (incomingNumber.equals("13117875310")) {
                             System.out.println("incomingNumber.equals(\"13117875310\") " + incomingNumber);
                             stopCall();
                             return;
-                        }
+                        }*/
 
                         int mode = dao.getMode(incomingNumber);
                         if ((mode == BlackListDBTable.ALL) || (mode == BlackListDBTable.TEL)) {

@@ -3,6 +3,7 @@ package com.sun.firewalldemo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.telephony.SmsMessage;
 
 import com.sun.firewalldemo.blacklist.BlackListDBTable;
@@ -40,11 +41,22 @@ public class MessageReceiver extends BroadcastReceiver {
             mMessageDao = new MessageDao(context);
 
             //拦截此号码的短信
-            if ((mode== BlackListDBTable.MSG)||(mode== BlackListDBTable.ALL)){
-                System.out.println(" abort "+number);
+            if ((mode == BlackListDBTable.MSG) || (mode == BlackListDBTable.ALL)) {
+                System.out.println(" abort " + number);
 
                 //将此短信加入到短信拦截列表
-                mMessageDao.add(name,number,content,time);
+                mMessageDao.add(name, number, content, time);
+
+                SharedPreferences sharedPreferences = context.getSharedPreferences("data",Context.MODE_PRIVATE);
+                boolean tb_2_checked = sharedPreferences.getBoolean("tb2",false);
+                if (tb_2_checked){
+                    Intent intentService = new Intent(context,NotifyService.class);
+                    intentService.addFlags(0);
+                    intentService.putExtra("number",number);
+                    context.startService(intentService);
+                }
+
+
 
                 abortBroadcast();
             }

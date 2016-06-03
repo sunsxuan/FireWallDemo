@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
     
 
     <application
@@ -61,6 +62,10 @@
         </activity>
 
         <service android:name=".BlackListService">
+
+        </service>
+
+        <service android:name=".NotifyService">
 
         </service>
         <receiver android:name=".MessageReceiver">
